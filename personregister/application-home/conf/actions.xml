@@ -11,6 +11,11 @@
 			<permissions>
 				<permission ref="person.edit" mode="set" />
 			</permissions>
+			<labels>
+				<label id="search" />
+				<label id="go.to.marker" />
+				<label id="delete.marker" />
+			</labels>
 			<params>
 				<param name="id" />
 				<param name="form_action" />
@@ -34,6 +39,11 @@
 			<permissions>
 				<permission ref="person.create" mode="set" />
 			</permissions>
+			<labels>
+				<label id="search" />
+				<label id="go.to.marker" />
+				<label id="delete.marker" />
+			</labels>
 			<params>
 				<param name="form_action" />
 			</params>

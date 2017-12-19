@@ -6,6 +6,11 @@
         <permissions>
             <permission ref="person.create" mode="set"></permission>
         </permissions>
+        <labels>
+            <label id="search">search position</label>
+            <label id="go.to.marker">Got to marker</label>
+            <label id="delete.marker">Delete marker</label>
+        </labels>
         <params>
             <param name="form_action">createPerson</param>
         </params>
@@ -43,8 +48,8 @@
             <field name="picture" type="file" binding="picture">
                 <label id="picture">Picture</label>
                 <validation>
-                    <fileUpload minCount="0" maxCount="1" minSize="0" maxSize="10" unit="MB" fileTypes="jpg,png">
-                        <message ref="picture" class="ERROR">Please upload a file of the following types: jpg,png</message>
+                    <fileUpload minCount="0" maxCount="1" minSize="0" maxSize="10" unit="MB" fileTypes="jpg,png,jpeg">
+                        <message ref="picture" class="ERROR">Please upload a file of the following types: jpg,png,jpeg</message>
                     </fileUpload>
                 </validation>
             </field>

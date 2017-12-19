@@ -130,7 +130,7 @@ public class Person implements FormValidator, Nameable, Versionable<Date>, Ident
 	}
 
 	@Transient
-	@FileUpload(minCount = 0, maxSize = 10, unit = Unit.MB, fileTypes = "jpg,png")
+	@FileUpload(minCount = 0, maxSize = 10, unit = Unit.MB, fileTypes = "jpg,png,jpeg")
 	public FormUpload getPicture() {
 		return picture;
 	}
