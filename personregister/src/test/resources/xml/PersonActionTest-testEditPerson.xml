@@ -7,7 +7,7 @@
             <permission ref="person.edit" mode="set"></permission>
         </permissions>
         <labels>
-            <label id="search">search position</label>
+            <label id="search">Search position</label>
             <label id="go.to.marker">Got to marker</label>
             <label id="delete.marker">Delete marker</label>
             <label id="enter.address">enter search-address</label>
