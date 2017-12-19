@@ -4,7 +4,7 @@
 	xsi:schemaLocation="http://www.appng.org/schema/platform http://www.appng.org/schema/platform/appng-platform.xsd">
 	<name>myapp</name>
 	<config>
-		<title id="application.title" />
+		<title id="application.title">Person Register</title>
 		<session>
 			<session-params>
 				<session-param name="LName" />

@@ -1,0 +1,11 @@
+= Personregister
+
+An appNG demo application that manages some persons.
+
+Build with
+
+`mvn package`
+
+and then deploy it to your appNG instance through a local repository.
+
+After that, you can use one of the profiles `local` or `appNGizer` for further deployments.  

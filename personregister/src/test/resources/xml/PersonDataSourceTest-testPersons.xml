@@ -2,8 +2,9 @@
 <datasource xmlns="http://www.appng.org/schema/platform" id="persons">
     <config>
         <title id="Persons">Persons</title>
+        <description id="Here you can view a list of persons, create new ones and edit existing. You can also apply some filters to the list of persons.">Here you can view a list of persons, create new ones and edit existing. You can also apply some filters to the list of persons.</description>
         <permissions>
-            <permission ref="anonymous.showpersons" mode="set"></permission>
+            <permission ref="person.list" mode="set"></permission>
         </permissions>
         <params>
             <param name="selected"/>
@@ -30,6 +31,7 @@
                 <icon>edit</icon>
             </link>
             <link id="actions[2]" mode="webservice" target="/service/localhost/application/webservice/pictureService?id=${current.id}">
+                <condition expression="${not empty current.pictureData}"/>
                 <permissions>
                     <permission ref="picture.download" mode="set"></permission>
                 </permissions>
@@ -42,7 +44,7 @@
                 </permissions>
                 <label id="delete">Delete</label>
                 <icon>delete</icon>
-                <confirmation id="person.delete.confirm">person.delete.confirm</confirmation>
+                <confirmation id="person.delete.confirm">Are you sure?</confirmation>
             </link>
         </linkpanel>
         <linkpanel id="create" location="both">
@@ -89,14 +91,10 @@
                         <label id="edit">Edit</label>
                         <icon>edit</icon>
                     </link>
-                    <link id="actions[2]" mode="webservice" target="/service/localhost/application/webservice/pictureService?id=3">
-                        <label id="download">download</label>
-                        <icon>download</icon>
-                    </link>
                     <link id="delete" mode="intern" target="/index?act=delete pid=3">
                         <label id="delete">Delete</label>
                         <icon>delete</icon>
-                        <confirmation id="person.delete.confirm">person.delete.confirm</confirmation>
+                        <confirmation id="person.delete.confirm">Are you sure?</confirmation>
                     </link>
                 </linkpanel>
             </result>
@@ -112,14 +110,10 @@
                         <label id="edit">Edit</label>
                         <icon>edit</icon>
                     </link>
-                    <link id="actions[2]" mode="webservice" target="/service/localhost/application/webservice/pictureService?id=4">
-                        <label id="download">download</label>
-                        <icon>download</icon>
-                    </link>
                     <link id="delete" mode="intern" target="/index?act=delete pid=4">
                         <label id="delete">Delete</label>
                         <icon>delete</icon>
-                        <confirmation id="person.delete.confirm">person.delete.confirm</confirmation>
+                        <confirmation id="person.delete.confirm">Are you sure?</confirmation>
                     </link>
                 </linkpanel>
             </result>
@@ -135,14 +129,10 @@
                         <label id="edit">Edit</label>
                         <icon>edit</icon>
                     </link>
-                    <link id="actions[2]" mode="webservice" target="/service/localhost/application/webservice/pictureService?id=1">
-                        <label id="download">download</label>
-                        <icon>download</icon>
-                    </link>
                     <link id="delete" mode="intern" target="/index?act=delete pid=1">
                         <label id="delete">Delete</label>
                         <icon>delete</icon>
-                        <confirmation id="person.delete.confirm">person.delete.confirm</confirmation>
+                        <confirmation id="person.delete.confirm">Are you sure?</confirmation>
                     </link>
                 </linkpanel>
             </result>
@@ -158,14 +148,10 @@
                         <label id="edit">Edit</label>
                         <icon>edit</icon>
                     </link>
-                    <link id="actions[2]" mode="webservice" target="/service/localhost/application/webservice/pictureService?id=2">
-                        <label id="download">download</label>
-                        <icon>download</icon>
-                    </link>
                     <link id="delete" mode="intern" target="/index?act=delete pid=2">
                         <label id="delete">Delete</label>
                         <icon>delete</icon>
-                        <confirmation id="person.delete.confirm">person.delete.confirm</confirmation>
+                        <confirmation id="person.delete.confirm">Are you sure?</confirmation>
                     </link>
                 </linkpanel>
             </result>

@@ -55,7 +55,7 @@
 					<executable>java</executable>
 					<mainClass>org.appng.tools.file.PropertyConstantCreator</mainClass>
 					<arguments>
-						<argument>application-home/dictionary/mymessages.properties</argument>
+						<argument>application-home/dictionary/personregister.properties</argument>
 						<argument>org.appng.application.personregister.MessageConstants</argument>
 						<argument>target/generated-sources/constants</argument>
 					</arguments>

@@ -2,6 +2,7 @@
 <action xmlns="http://www.appng.org/schema/platform" id="createPerson" eventId="personEvent" async="false">
     <config>
         <title id="person.create">New Person</title>
+        <description id="Enter a new person here.">Enter a new person here.</description>
         <permissions>
             <permission ref="person.create" mode="set"></permission>
         </permissions>

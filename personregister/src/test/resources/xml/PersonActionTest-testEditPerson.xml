@@ -2,7 +2,7 @@
 <action xmlns="http://www.appng.org/schema/platform" id="editPerson" eventId="personEvent" async="false">
     <config>
         <title id="person.edit" params="#{name},#{lastname}">Edit Person: Luke the Duke Skywalker</title>
-        <description id="person.edit.desc">Here you can edit a person's details</description>
+        <description id="person.edit.desc">Here you can edit a person's details.</description>
         <permissions>
             <permission ref="person.edit" mode="set"></permission>
         </permissions>
