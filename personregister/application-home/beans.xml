@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jpa="http://www.springframework.org/schema/data/jpa" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+       	http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/tx
+       	http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/data/jpa
+        http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
+
+	<context:component-scan base-package="org.appng.application.personregister" />
+
+	<jpa:repositories base-package="org.appng.application.personregister.repository"
+		base-class="org.appng.persistence.repository.SearchRepositoryImpl" />
+
+	<tx:annotation-driven />
+
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager" />
+
+
+	<bean id="entityManagerFactory"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="persistenceProviderClass"
+			value="org.hibernate.jpa.HibernatePersistenceProvider" />
+		<property name="persistenceUnitName" value="personregister" />
+		<property name="dataSource" ref="datasource" />
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
+		</property>
+		<property name="packagesToScan">
+			<list>
+				<value>org.appng.application.personregister.model</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="entityManager"
+		class="org.springframework.orm.jpa.support.SharedEntityManagerBean" />
+
+	<bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper"
+		scope="request">
+		<property name="dateFormat">
+			<bean class="java.text.SimpleDateFormat">
+				<constructor-arg value="dd-MM-yyyy HH:mm" />
+			</bean>
+		</property>
+		<property name="serializationInclusion" value="NON_NULL" />
+	</bean>
+
+	<bean
+		class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"
+		scope="request">
+		<property name="prettyPrint" value="true" />
+		<property name="objectMapper" ref="objectMapper" />
+	</bean>
+
+	<bean id="reportPersonsJob"
+		class="org.appng.application.personregister.job.ReportPersonsJob">
+		<property name="jobDataMap">
+			<map>
+				<entry key="enabled" value="${isDemoJobEnabled:false}" />
+				<entry key="runOnce" value="true" />
+				<entry key="cronExpression" value="0 0 8 ? * *" />
+				<entry key="sender" value="admin@example.com" />
+				<entry key="receiver" value="admin@example.com" />
+				<entry key="subject" value="Profiles without an image detected." />
+			</map>
+		</property>
+	</bean>
+
+	<bean id="mailTransport" class="org.appng.mail.impl.DefaultTransport">
+		<constructor-arg value="${site.mailHost:localhost}" />
+		<constructor-arg value="${site.mailPort:25}" />
+	</bean>
+</beans>

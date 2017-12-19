@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<applicationRootConfig id="index"
+	xmlns="http://www.appng.org/schema/platform" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.appng.org/schema/platform http://www.appng.org/schema/platform/appng-platform.xsd">
+	<name>myapp</name>
+	<config>
+		<title id="application.title" />
+		<session>
+			<session-params>
+				<session-param name="LName" />
+				<session-param name="FName" />
+				<session-param name="FGender" />
+				<session-param name="FBornAfter" />
+			</session-params>
+		</session>
+	</config>
+	<navigation location="inline" id="nav">
+		<link target="/index" mode="intern">
+			<label>Index</label>
+		</link>
+	</navigation>
+	<pages>
+		<page id="index" type="index">
+			<config>
+				<title>Persons</title>
+				<url-schema>
+					<url-params>
+						<url-param name="action"></url-param>
+						<url-param name="id"></url-param>
+					</url-params>
+					<get-params>
+						<get-param name="act" />
+						<get-param name="pid" />
+					</get-params>
+					<post-params>
+						<post-param name="form_action"></post-param>
+					</post-params>
+				</url-schema>
+			</config>
+			<structure>
+				<section hidden="true">
+					<element>
+						<datasource id="personFilter" />
+					</element>
+				</section>
+				<section>
+					<element>
+						<action eventId="personEvent" id="editPerson">
+							<condition expression="${'update' == action and not empty id}" />
+							<params>
+								<param name="id">${id}</param>
+								<param name="form_action">${form_action}</param>
+							</params>
+						</action>
+					</element>
+					<element>
+						<action eventId="personEvent" id="createPerson">
+							<condition expression="${'create' eq action and empty id}" />
+						</action>
+					</element>
+					<element>
+						<datasource id="persons">
+							<params>
+								<param name="selected">${id}</param>
+							</params>
+						</datasource>
+					</element>
+				</section>
+				<section hidden="true">
+					<element>
+						<action eventId="personEvent" id="deletePerson">
+							<params>
+								<param name="act">${act}</param>
+								<param name="pid">${pid}</param>
+							</params>
+						</action>
+					</element>
+				</section>
+			</structure>
+		</page>
+	</pages>
+</applicationRootConfig>

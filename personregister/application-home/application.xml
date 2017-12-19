@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application xmlns="http://www.appng.org/schema/application"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.appng.org/schema/application http://www.appng.org/schema/application/appng-application.xsd">
+	<name>${project.artifactId}</name>
+	<display-name><![CDATA[${displayName}]]></display-name>
+	<description><![CDATA[${project.description}]]></description>
+	<long-description><![CDATA[${longDescription}]]></long-description>
+	<version>${project.version}</version>
+	<timestamp>${timestamp}</timestamp>
+	<appng-version>${appNGVersion}</appng-version>
+
+	<roles>
+		<role admin-role="true">
+			<name>Admin</name>
+			<description>an administrator with all permissions</description>
+			<permission id="output-format.html" />
+			<permission id="output-type.webgui" />
+			<permission id="person.list" />
+			<permission id="picture.download" />
+			<permission id="person.create" />
+			<permission id="person.edit" />
+			<permission id="person.delete" />
+		</role>
+		<role>
+			<name>Editor</name>
+			<description>an editor</description>
+			<permission id="output-format.html" />
+			<permission id="output-type.webgui" />
+			<permission id="person.list" />
+			<permission id="picture.download" />
+			<permission id="person.edit" />
+		</role>
+	</roles>
+
+	<permissions>
+		<permission id="output-format.html" />
+		<permission id="output-type.webgui" />
+		<permission id="person.list" />
+		<permission id="person.create" />
+		<permission id="person.edit" />
+		<permission id="person.delete" />
+		<permission id="picture.download" />
+	</permissions>
+
+	<properties>
+		<property id="featureImageProcessing">true</property>
+		<property id="featureIndexing">true</property>
+	</properties>
+
+	<datasources>
+		<datasource type="mysql" />
+	</datasources>
+
+</application>

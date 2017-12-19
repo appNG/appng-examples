@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<datasource xmlns="http://www.appng.org/schema/platform" id="persons">
+    <config>
+        <title id="Persons">Persons</title>
+        <permissions>
+            <permission ref="anonymous.showpersons" mode="set"></permission>
+        </permissions>
+        <params>
+            <param name="selected"/>
+        </params>
+        <meta-data bindClass="org.appng.application.personregister.model.Person" result-selector="${current.id eq selected}">
+            <field name="lastname" type="text" binding="lastname">
+                <sort/>
+                <label id="lastname">Lastname</label>
+            </field>
+            <field name="name" type="text" binding="name">
+                <sort/>
+                <label id="name">Name</label>
+            </field>
+            <field name="actions" type="linkpanel" binding="actions">
+                <label id="actions">Actions</label>
+            </field>
+        </meta-data>
+        <linkpanel id="actions" location="inline">
+            <link id="edit" mode="intern" target="/index/update/${current.id}" default="true">
+                <permissions>
+                    <permission ref="person.edit" mode="set"></permission>
+                </permissions>
+                <label id="edit">Edit</label>
+                <icon>edit</icon>
+            </link>
+            <link id="actions[2]" mode="webservice" target="/service/localhost/application/webservice/pictureService?id=${current.id}">
+                <permissions>
+                    <permission ref="picture.download" mode="set"></permission>
+                </permissions>
+                <label id="download">download</label>
+                <icon>download</icon>
+            </link>
+            <link id="delete" mode="intern" target="/index?act=delete pid=${current.id}">
+                <permissions>
+                    <permission ref="person.delete" mode="set"></permission>
+                </permissions>
+                <label id="delete">Delete</label>
+                <icon>delete</icon>
+                <confirmation id="person.delete.confirm">person.delete.confirm</confirmation>
+            </link>
+        </linkpanel>
+        <linkpanel id="create" location="both">
+            <link id="edit" mode="intern" target="/index/create">
+                <permissions>
+                    <permission ref="person.create" mode="set"></permission>
+                </permissions>
+                <label id="person.create">New Person</label>
+                <icon>new</icon>
+            </link>
+        </linkpanel>
+    </config>
+    <data>
+        <selectionGroup>
+            <selection id="LName" type="text">
+                <title id="lastname">Lastname</title>
+                <option value="" name="LName"/>
+            </selection>
+            <selection id="FName" type="text">
+                <title id="name">Name</title>
+                <option value="" name="FName"/>
+            </selection>
+            <selection id="FBornAfter" type="date" format="MM/dd/yyyy">
+                <title id="bornAfter">Born After</title>
+                <option value="" name="FBornAfter"/>
+            </selection>
+            <selection id="FGender" type="radio">
+                <title id="gender">Gender</title>
+                <option value="MALE" name="Male" selected="false"/>
+                <option value="FEMALE" name="Female" selected="false"/>
+                <option value="OTHER" name="Other" selected="false"/>
+            </selection>
+        </selectionGroup>
+        <resultset chunk="0" chunkname="persons" chunksize="25" nextchunk="0" previouschunk="0" firstchunk="0" lastchunk="0" hits="4">
+            <result>
+                <field name="lastname" type="text">
+                    <value>Skywalker</value>
+                </field>
+                <field name="name" type="text">
+                    <value>Luke</value>
+                </field>
+                <linkpanel id="actions" location="inline">
+                    <link id="edit" mode="intern" target="/index/update/3" default="true">
+                        <label id="edit">Edit</label>
+                        <icon>edit</icon>
+                    </link>
+                    <link id="actions[2]" mode="webservice" target="/service/localhost/application/webservice/pictureService?id=3">
+                        <label id="download">download</label>
+                        <icon>download</icon>
+                    </link>
+                    <link id="delete" mode="intern" target="/index?act=delete pid=3">
+                        <label id="delete">Delete</label>
+                        <icon>delete</icon>
+                        <confirmation id="person.delete.confirm">person.delete.confirm</confirmation>
+                    </link>
+                </linkpanel>
+            </result>
+            <result>
+                <field name="lastname" type="text">
+                    <value>Kenobi</value>
+                </field>
+                <field name="name" type="text">
+                    <value>Obi-Wan</value>
+                </field>
+                <linkpanel id="actions" location="inline">
+                    <link id="edit" mode="intern" target="/index/update/4" default="true">
+                        <label id="edit">Edit</label>
+                        <icon>edit</icon>
+                    </link>
+                    <link id="actions[2]" mode="webservice" target="/service/localhost/application/webservice/pictureService?id=4">
+                        <label id="download">download</label>
+                        <icon>download</icon>
+                    </link>
+                    <link id="delete" mode="intern" target="/index?act=delete pid=4">
+                        <label id="delete">Delete</label>
+                        <icon>delete</icon>
+                        <confirmation id="person.delete.confirm">person.delete.confirm</confirmation>
+                    </link>
+                </linkpanel>
+            </result>
+            <result>
+                <field name="lastname" type="text">
+                    <value>Doe</value>
+                </field>
+                <field name="name" type="text">
+                    <value>John</value>
+                </field>
+                <linkpanel id="actions" location="inline">
+                    <link id="edit" mode="intern" target="/index/update/1" default="true">
+                        <label id="edit">Edit</label>
+                        <icon>edit</icon>
+                    </link>
+                    <link id="actions[2]" mode="webservice" target="/service/localhost/application/webservice/pictureService?id=1">
+                        <label id="download">download</label>
+                        <icon>download</icon>
+                    </link>
+                    <link id="delete" mode="intern" target="/index?act=delete pid=1">
+                        <label id="delete">Delete</label>
+                        <icon>delete</icon>
+                        <confirmation id="person.delete.confirm">person.delete.confirm</confirmation>
+                    </link>
+                </linkpanel>
+            </result>
+            <result>
+                <field name="lastname" type="text">
+                    <value>Doe</value>
+                </field>
+                <field name="name" type="text">
+                    <value>Jane</value>
+                </field>
+                <linkpanel id="actions" location="inline">
+                    <link id="edit" mode="intern" target="/index/update/2" default="true">
+                        <label id="edit">Edit</label>
+                        <icon>edit</icon>
+                    </link>
+                    <link id="actions[2]" mode="webservice" target="/service/localhost/application/webservice/pictureService?id=2">
+                        <label id="download">download</label>
+                        <icon>download</icon>
+                    </link>
+                    <link id="delete" mode="intern" target="/index?act=delete pid=2">
+                        <label id="delete">Delete</label>
+                        <icon>delete</icon>
+                        <confirmation id="person.delete.confirm">person.delete.confirm</confirmation>
+                    </link>
+                </linkpanel>
+            </result>
+        </resultset>
+    </data>
+</datasource>

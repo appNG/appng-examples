@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<event id="personEvent" xmlns="http://www.appng.org/schema/platform"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.appng.org/schema/platform http://www.appng.org/schema/platform/appng-platform.xsd">
+	<config></config>
+
+	<action id="editPerson">
+		<config>
+			<title id="person.edit" params="#{name},#{lastname}"></title>
+			<description id="person.edit.desc" />
+			<permissions>
+				<permission ref="person.edit" mode="set" />
+			</permissions>
+			<params>
+				<param name="id" />
+				<param name="form_action" />
+			</params>
+		</config>
+		<condition expression="${not empty id and 'editPerson' eq form_action}" />
+		<datasource id="person">
+			<params>
+				<param name="id">${id}</param>
+			</params>
+		</datasource>
+		<bean id="personAction">
+			<option name="action" id="edit" person="${id}" />
+		</bean>
+	</action>
+
+	<action id="createPerson">
+		<config>
+			<title id="person.create"></title>
+			<description>Enter a new person here.</description>
+			<permissions>
+				<permission ref="person.create" mode="set" />
+			</permissions>
+			<params>
+				<param name="form_action" />
+			</params>
+		</config>
+		<condition expression="${'createPerson' eq form_action}" />
+		<datasource id="person">
+			<params>
+				<param name="id">-1</param>
+			</params>
+		</datasource>
+		<bean id="personAction">
+			<option name="action" id="create" />
+		</bean>
+	</action>
+
+	<action id="deletePerson">
+		<config>
+			<title id="person.delete"></title>
+			<permissions>
+				<permission ref="person.delete" mode="set" />
+			</permissions>
+			<params>
+				<param name="act" />
+				<param name="pid" />
+			</params>
+		</config>
+		<condition expression="${'delete' eq act and not empty pid}" />
+		<bean id="personAction">
+			<option name="action" id="delete" person="${pid}" />
+		</bean>
+	</action>
+</event>
