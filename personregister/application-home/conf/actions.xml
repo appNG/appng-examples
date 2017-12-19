@@ -15,6 +15,7 @@
 				<label id="search" />
 				<label id="go.to.marker" />
 				<label id="delete.marker" />
+				<label id="enter.address" />
 			</labels>
 			<params>
 				<param name="id" />
@@ -43,6 +44,7 @@
 				<label id="search" />
 				<label id="go.to.marker" />
 				<label id="delete.marker" />
+				<label id="enter.address" />
 			</labels>
 			<params>
 				<param name="form_action" />

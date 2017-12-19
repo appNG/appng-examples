@@ -10,6 +10,7 @@
             <label id="search">search position</label>
             <label id="go.to.marker">Got to marker</label>
             <label id="delete.marker">Delete marker</label>
+            <label id="enter.address">enter search-address</label>
         </labels>
         <params>
             <param name="form_action">createPerson</param>
