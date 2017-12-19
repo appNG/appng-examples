@@ -1,32 +1,32 @@
 {
   "content" : [ {
-    "id" : 1,
-    "name" : "John",
-    "lastname" : "Doe",
     "birthDay" : "30-11-2017 00:00",
-    "version" : "30-11-2017 16:21",
     "gender" : "MALE",
-    "location" : {
-      "latitude" : 52.0,
-      "longitude" : 8.0
-    }
-  }, {
-    "id" : 2,
-    "name" : "Jane",
+    "id" : 1,
     "lastname" : "Doe",
-    "birthDay" : "30-11-2027 00:00",
-    "version" : "30-11-2017 16:21",
-    "gender" : "FEMALE",
     "location" : {
       "latitude" : 52.0,
       "longitude" : 8.0
-    }
+    },
+    "name" : "John",
+    "version" : "30-11-2017 16:21"
+  }, {
+    "birthDay" : "30-11-2027 00:00",
+    "gender" : "FEMALE",
+    "id" : 2,
+    "lastname" : "Doe",
+    "location" : {
+      "latitude" : 52.0,
+      "longitude" : 8.0
+    },
+    "name" : "Jane",
+    "version" : "30-11-2017 16:21"
   } ],
-  "last" : false,
-  "totalPages" : 2,
-  "totalElements" : 4,
   "first" : true,
+  "last" : false,
+  "number" : 0,
   "numberOfElements" : 2,
   "size" : 2,
-  "number" : 0
+  "totalElements" : 4,
+  "totalPages" : 2
 }

@@ -19,15 +19,14 @@ import java.util.Date;
 
 import org.appng.application.personregister.business.PersonTestBase;
 import org.appng.application.personregister.model.Person;
-import org.appng.application.personregister.service.PersonRestService;
 import org.appng.testsupport.validation.WritingJsonValidator;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 
+import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 public class PersonRestServiceTest extends PersonTestBase {
 
 	@Autowired
@@ -41,8 +40,11 @@ public class PersonRestServiceTest extends PersonTestBase {
 		ResponseEntity<Page<Person>> persons = service.getPersons(0);
 		Page<Person> page = persons.getBody();
 		page.forEach(p -> p.setVersion(new Date(1512055286373L)));
+		mapper.configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, true);
 		String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(page);
 		WritingJsonValidator.validate(json, "json/PersonRestServiceTest-persons.json");
 	}
+	
+
 
 }
