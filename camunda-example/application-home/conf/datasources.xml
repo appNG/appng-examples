@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<datasources xmlns="http://www.appng.org/schema/platform" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.appng.org/schema/platform http://www.appng.org/schema/platform/appng-platform.xsd">
+
+	<datasource id="upload">
+		<config>
+			<meta-data bindClass="org.appng.application.example.camunda.domain.Document">
+				<validation>
+					<group class="org.appng.application.example.camunda.domain.Document.Upload" />
+				</validation>
+				<field name="upload" type="file">
+					<label id="file" />
+				</field>
+			</meta-data>
+		</config>
+		<bean id="documentUpload" />
+	</datasource>
+
+	<datasource id="tasks">
+		<config>
+			<title>Open Tasks</title>
+			<params>
+				<param name="selected" />
+			</params>
+			<meta-data bindClass="org.appng.camunda.bpm.TaskWrapper" result-selector="${current.id eq selected}">
+				<field name="id" type="text">
+					<sort />
+					<label id="id" />
+				</field>
+				<field name="createTime" type="date" format="dd.MM.yy HH:mm">
+					<sort order="desc" prio="0" />
+					<label id="created" />
+				</field>
+				<field name="name" type="text">
+					<label id="name" />
+				</field>
+				<field name="owner" type="text">
+					<label id="owner" />
+				</field>
+				<field name="assignee" type="text">
+					<label id="assignee" />
+				</field>
+				<field name="priority" type="text">
+					<label id="priority" />
+				</field>
+				<field name="description" type="text">
+					<label id="description" />
+				</field>
+				<field name="actions" type="linkpanel">
+					<label id="action"></label>
+				</field>
+			</meta-data>
+			<linkpanel location="inline" id="actions">
+				<link target="/tasks/review/${current.id}" mode="intern" id="review" default="true">
+					<condition expression="${current.name eq 'Review Document'}" />
+					<icon>preview</icon>
+					<label>Review Document</label>
+					<permissions>
+						<permission ref="task.review" mode="set" />
+					</permissions>
+				</link>
+				<link target="/tasks/approve/${current.id}" mode="intern" id="approve" default="true">
+					<condition expression="${current.name eq 'Approve Document'}" />
+					<icon>edit</icon>
+					<label>Approve Document</label>
+					<permissions>
+						<permission ref="task.approve" mode="set" />
+					</permissions>
+				</link>
+				<link target="download?id=${current.variables['id']}" mode="webservice">
+					<icon>download</icon>
+					<label>Download Document</label>
+				</link>
+			</linkpanel>
+		</config>
+		<bean id="tasks"></bean>
+	</datasource>
+
+	<datasource id="task">
+		<config>
+			<params>
+				<param name="id" />
+				<param name="readonly" type="boolean" default="false" />
+			</params>
+			<meta-data bindClass="org.appng.camunda.bpm.TaskWrapper">
+				<field name="id" type="text" readonly="true">
+					<label id="id" />
+				</field>
+				<field name="name" type="text" readonly="true">
+					<label id="name" />
+				</field>
+				<field name="owner" type="text" readonly="${readonly}">
+					<label id="owner" />
+				</field>
+				<field name="assignee" type="list:select" readonly="${readonly}">
+					<label id="assignee" />
+				</field>
+				<field name="priority" type="int" readonly="${readonly}">
+					<label id="priority" />
+				</field>
+				<field name="description" type="text">
+					<label id="description" />
+				</field>
+			</meta-data>
+		</config>
+		<bean id="tasks">
+			<option name="task" id="${id}" />
+		</bean>
+	</datasource>
+
+	<datasource id="processes">
+		<config>
+			<title>Processes</title>
+			<permissions>
+				<permission ref="process.list" mode="set" />
+			</permissions>
+			<meta-data bindClass="org.camunda.bpm.engine.repository.ProcessDefinition">
+				<field name="key" type="text">
+					<label id="key" />
+				</field>
+				<field name="name" type="text">
+					<label id="name" />
+				</field>
+				<field name="resourceName" type="text">
+					<label id="resource" />
+				</field>
+				<field name="actions" type="linkpanel">
+					<label id="actions"></label>
+					<permissions>
+						<permission ref="process.download" mode="set" />
+					</permissions>
+				</field>
+			</meta-data>
+			<linkpanel location="inline" id="actions">
+				<link target="processes/${current.resourceName}" mode="webservice">
+					<label id="download" />
+					<icon>download</icon>
+				</link>
+				<link target="modelViewer/${current.resourceName}" mode="webservice">
+					<label id="preview" />
+					<icon>preview</icon>
+				</link>
+			</linkpanel>
+		</config>
+		<bean id="processes"></bean>
+	</datasource>
+
+</datasources>

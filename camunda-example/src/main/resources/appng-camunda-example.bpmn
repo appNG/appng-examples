@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="1.11.2">
+  <bpmn:process id="Document_Upload_Review" name="Review and approve documents" isExecutable="true" camunda:versionTag="1.0.0">
+    <bpmn:serviceTask id="Task_Check" name="Automatic Checks" camunda:delegateExpression="${checkDocument}">
+      <bpmn:extensionElements>
+        <camunda:field name="allowedExtensions">
+          <camunda:string>pdf,png,xlsx,doc,txt</camunda:string>
+        </camunda:field>
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_1j798hw</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1049ocx</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="SequenceFlow_1j798hw" sourceRef="StartEvent_1" targetRef="Task_Check" />
+    <bpmn:userTask id="Task_Review" name="Review Document" camunda:formKey="reviewDocument" camunda:assignee="Reviewer">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="FormField_reviewed" label="Document reviewed" type="boolean" defaultValue="false">
+            <camunda:validation>
+              <camunda:constraint name="required" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="FormField_reviewComment" label="Comment" type="string">
+            <camunda:validation>
+              <camunda:constraint name="required" />
+            </camunda:validation>
+          </camunda:formField>
+        </camunda:formData>
+        <camunda:taskListener delegateExpression="${documentAssignedListener}" event="assignment" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_0lrdy7d</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_12saj0k</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="SequenceFlow_12saj0k" sourceRef="Task_Review" targetRef="Task_Approve" />
+    <bpmn:userTask id="Task_Approve" name="Approve Document" camunda:formKey="approveDocument" camunda:assignee="${assignee}" camunda:candidateGroups="approver">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="FormField_approve" label="Approved" type="boolean" defaultValue="false">
+            <camunda:validation>
+              <camunda:constraint name="required" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="FormField_approveComment" label="Comment" type="string" />
+        </camunda:formData>
+        <camunda:taskListener delegateExpression="${documentAssignedListener}" event="assignment" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_12saj0k</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0wmx030</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="Task_Publish" name="Publish Document" camunda:delegateExpression="${publishDocument}">
+      <bpmn:incoming>SequenceFlow_0wmx030</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1rnocm3</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="SequenceFlow_0wmx030" sourceRef="Task_Approve" targetRef="Task_Publish" />
+    <bpmn:endEvent id="EndEvent_OK" name="Document is published">
+      <bpmn:incoming>SequenceFlow_09xrkks</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_1rnocm3" sourceRef="Task_Publish" targetRef="Task_1jk27vk" />
+    <bpmn:startEvent id="StartEvent_1" name="New Document Found" camunda:initiator="Scheduler Job">
+      <bpmn:outgoing>SequenceFlow_1j798hw</bpmn:outgoing>
+      <bpmn:timerEventDefinition>
+        <bpmn:timeCycle xsi:type="bpmn:tFormalExpression">0 0/10 * 1/1 * ? *</bpmn:timeCycle>
+      </bpmn:timerEventDefinition>
+    </bpmn:startEvent>
+    <bpmn:endEvent id="EndEvent_NOT_OK" name="Document is not published">
+      <bpmn:incoming>SequenceFlow_0r9zgbh</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:exclusiveGateway id="ExclusiveGateway_1otrbj9">
+      <bpmn:incoming>SequenceFlow_1049ocx</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0lrdy7d</bpmn:outgoing>
+      <bpmn:outgoing>SequenceFlow_0r9zgbh</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="SequenceFlow_1049ocx" sourceRef="Task_Check" targetRef="ExclusiveGateway_1otrbj9" />
+    <bpmn:sequenceFlow id="SequenceFlow_0lrdy7d" name="OK" sourceRef="ExclusiveGateway_1otrbj9" targetRef="Task_Review">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${accepted}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="SequenceFlow_0r9zgbh" name="not OK" sourceRef="ExclusiveGateway_1otrbj9" targetRef="EndEvent_NOT_OK">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${!accepted}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="SequenceFlow_09xrkks" sourceRef="Task_1jk27vk" targetRef="EndEvent_OK" />
+    <bpmn:sendTask id="Task_1jk27vk" name="Send Notifications" camunda:delegateExpression="${sendNotification}">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="Receiver">
+            <camunda:list>
+              <camunda:value>john.doe@example.com</camunda:value>
+            </camunda:list>
+          </camunda:inputParameter>
+          <camunda:inputParameter name="Subject">New document</camunda:inputParameter>
+          <camunda:inputParameter name="Sender">bpmn@appng.org</camunda:inputParameter>
+          <camunda:inputParameter name="Content"><![CDATA[Hello,
+
+a new document has been published!
+]]></camunda:inputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_1rnocm3</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_09xrkks</bpmn:outgoing>
+    </bpmn:sendTask>
+    <bpmn:textAnnotation id="TextAnnotation_1fzl2lw">
+      <bpmn:text>Check for a valid file extension</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_1g9d6n3" sourceRef="Task_Check" targetRef="TextAnnotation_1fzl2lw" />
+    <bpmn:textAnnotation id="TextAnnotation_0hzktwg">
+      <bpmn:text>A review of the document must be done</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_0xdoctm" sourceRef="Task_Review" targetRef="TextAnnotation_0hzktwg" />
+    <bpmn:textAnnotation id="TextAnnotation_0c6gsyu">
+      <bpmn:text>The document must be approved</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:textAnnotation id="TextAnnotation_0avh909">
+      <bpmn:text>Document is published automatically</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_1s8twob" sourceRef="Task_Publish" targetRef="TextAnnotation_0avh909" />
+    <bpmn:association id="Association_04i1xzg" sourceRef="Task_Approve" targetRef="TextAnnotation_0c6gsyu" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Document_Upload_Review">
+      <bpmndi:BPMNShape id="ServiceTask_0berygi_di" bpmnElement="Task_Check">
+        <dc:Bounds x="69" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1j798hw_di" bpmnElement="SequenceFlow_1j798hw">
+        <di:waypoint xsi:type="dc:Point" x="-19" y="120" />
+        <di:waypoint xsi:type="dc:Point" x="69" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="-20" y="98" width="90" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="UserTask_0kg8j7s_di" bpmnElement="Task_Review">
+        <dc:Bounds x="397" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_12saj0k_di" bpmnElement="SequenceFlow_12saj0k">
+        <di:waypoint xsi:type="dc:Point" x="497" y="120" />
+        <di:waypoint xsi:type="dc:Point" x="615" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="511" y="98" width="90" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="UserTask_1fyjlxo_di" bpmnElement="Task_Approve">
+        <dc:Bounds x="615" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ServiceTask_0eehffx_di" bpmnElement="Task_Publish">
+        <dc:Bounds x="774" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0wmx030_di" bpmnElement="SequenceFlow_0wmx030">
+        <di:waypoint xsi:type="dc:Point" x="715" y="120" />
+        <di:waypoint xsi:type="dc:Point" x="774" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="744.5" y="98" width="0" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="EndEvent_0t4cias_di" bpmnElement="EndEvent_OK">
+        <dc:Bounds x="1118" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1108" y="141" width="59" height="42" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1rnocm3_di" bpmnElement="SequenceFlow_1rnocm3">
+        <di:waypoint xsi:type="dc:Point" x="874" y="120" />
+        <di:waypoint xsi:type="dc:Point" x="951" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="867.5" y="98" width="90" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="StartEvent_0ain4rc_di" bpmnElement="StartEvent_1">
+        <dc:Bounds x="-55" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="-73" y="138" width="74" height="28" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_0m6gqjl_di" bpmnElement="EndEvent_NOT_OK">
+        <dc:Bounds x="954" y="264.7567270730368" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="934" y="304" width="77" height="28" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_1fzl2lw_di" bpmnElement="TextAnnotation_1fzl2lw">
+        <dc:Bounds x="206" y="-104" width="185.99397590361448" height="27.538726333907057" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Association_1g9d6n3_di" bpmnElement="Association_1g9d6n3">
+        <di:waypoint xsi:type="dc:Point" x="153" y="80" />
+        <di:waypoint xsi:type="dc:Point" x="287" y="-76" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="TextAnnotation_0hzktwg_di" bpmnElement="TextAnnotation_0hzktwg">
+        <dc:Bounds x="416" y="-105" width="188.9925774526678" height="41.30808950086059" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Association_0xdoctm_di" bpmnElement="Association_0xdoctm">
+        <di:waypoint xsi:type="dc:Point" x="459" y="80" />
+        <di:waypoint xsi:type="dc:Point" x="504" y="-64" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="TextAnnotation_0c6gsyu_di" bpmnElement="TextAnnotation_0c6gsyu">
+        <dc:Bounds x="634" y="-108" width="223.99419104991395" height="27.538726333907057" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_0avh909_di" bpmnElement="TextAnnotation_0avh909">
+        <dc:Bounds x="922" y="-25" width="157.984375" height="42" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Association_1s8twob_di" bpmnElement="Association_1s8twob">
+        <di:waypoint xsi:type="dc:Point" x="871" y="87" />
+        <di:waypoint xsi:type="dc:Point" x="970" y="17" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ExclusiveGateway_1otrbj9_di" bpmnElement="ExclusiveGateway_1otrbj9" isMarkerVisible="true">
+        <dc:Bounds x="230.60068846815832" y="95" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="255.60068846815832" y="148" width="0" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1049ocx_di" bpmnElement="SequenceFlow_1049ocx">
+        <di:waypoint xsi:type="dc:Point" x="169" y="120" />
+        <di:waypoint xsi:type="dc:Point" x="231" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="200" y="98" width="0" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0lrdy7d_di" bpmnElement="SequenceFlow_0lrdy7d">
+        <di:waypoint xsi:type="dc:Point" x="281" y="120" />
+        <di:waypoint xsi:type="dc:Point" x="397" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="332.225" y="98" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0r9zgbh_di" bpmnElement="SequenceFlow_0r9zgbh">
+        <di:waypoint xsi:type="dc:Point" x="256" y="145" />
+        <di:waypoint xsi:type="dc:Point" x="256" y="283" />
+        <di:waypoint xsi:type="dc:Point" x="954" y="283" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="264" y="207" width="33" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_09xrkks_di" bpmnElement="SequenceFlow_09xrkks">
+        <di:waypoint xsi:type="dc:Point" x="1051" y="120" />
+        <di:waypoint xsi:type="dc:Point" x="1118" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1084.5" y="98" width="0" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="SendTask_0t2z8ak_di" bpmnElement="Task_1jk27vk">
+        <dc:Bounds x="951" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Association_04i1xzg_di" bpmnElement="Association_04i1xzg">
+        <di:waypoint xsi:type="dc:Point" x="688" y="80" />
+        <di:waypoint xsi:type="dc:Point" x="703" y="-80" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

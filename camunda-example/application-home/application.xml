@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application xmlns="http://www.appng.org/schema/application" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.appng.org/schema/application http://www.appng.org/schema/application/appng-application.xsd">
+	<name>${project.artifactId}</name>
+	<display-name><![CDATA[${displayName}]]></display-name>
+	<description><![CDATA[${project.description}]]></description>
+	<long-description><![CDATA[${longDescription}]]></long-description>
+	<version>${project.version}</version>
+	<timestamp>${timestamp}</timestamp>
+	<appng-version>${appNGVersion}</appng-version>
+
+	<roles>
+		<role admin-role="true">
+			<name>Admin</name>
+			<description>an administrator with all permissions</description>
+			<permission id="output-format.html" />
+			<permission id="output-type.webgui" />
+			<permission id="document.upload" />
+			<permission id="tasks.showAll" />
+			<permission id="page.processes" />
+			<permission id="process.list" />
+			<permission id="process.download" />
+		</role>
+		<role>
+			<name>Submitter</name>
+			<description>submits new files</description>
+			<permission id="output-format.html" />
+			<permission id="output-type.webgui" />
+			<permission id="document.upload" />
+		</role>
+		<role>
+			<name>Reviewer</name>
+			<description>reviews the files</description>
+			<permission id="output-format.html" />
+			<permission id="output-type.webgui" />
+			<permission id="task.review" />
+		</role>
+		<role>
+			<name>Editor</name>
+			<description>approves the files</description>
+			<permission id="output-format.html" />
+			<permission id="output-type.webgui" />
+			<permission id="task.approve" />
+		</role>
+	</roles>
+
+	<permissions>
+		<permission id="output-format.html" />
+		<permission id="output-type.webgui" />
+		<permission id="tasks.showAll" />
+		<permission id="task.review" />
+		<permission id="task.approve" />
+		<permission id="document.upload" />
+		<permission id="page.processes" />
+		<permission id="process.list" />
+		<permission id="process.download" />
+	</permissions>
+
+	<properties />
+
+	<datasources>
+		<datasource type="mysql" />
+	</datasources>
+
+</application>

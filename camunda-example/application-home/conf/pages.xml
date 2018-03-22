@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pages xmlns="http://www.appng.org/schema/platform" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.appng.org/schema/platform http://www.appng.org/schema/platform/appng-platform.xsd">
+
+	<page id="tasks" type="index">
+		<config>
+			<title id="Upload"></title>
+			<url-schema>
+				<url-params>
+					<url-param name="action" />
+					<url-param name="taskId" />
+				</url-params>
+				<post-params>
+					<post-param name="form_action" />
+				</post-params>
+			</url-schema>
+		</config>
+		<structure>
+			<section>
+				<element>
+					<action eventId="taskEvent" id="review" onSuccess="/tasks">
+						<params>
+							<param name="form_action">${form_action}</param>
+							<param name="id">${taskId}</param>
+						</params>
+						<condition expression="${'review' eq action and not empty taskId}" />
+					</action>
+				</element>
+				<element>
+					<action eventId="taskEvent" id="approve" onSuccess="/tasks">
+						<params>
+							<param name="form_action">${form_action}</param>
+							<param name="id">${taskId}</param>
+						</params>
+						<condition expression="${'approve' eq action and not empty taskId}" />
+					</action>
+				</element>
+				<element>
+					<datasource id="tasks">
+						<params>
+							<param name="selected">${taskId}</param>
+						</params>
+					</datasource>
+				</element>
+			</section>
+			<section>
+				<element>
+					<action eventId="uploadEvent" id="upload"></action>
+				</element>
+			</section>
+		</structure>
+	</page>
+
+	<page id="processes">
+		<config>
+			<title id="Prozesse"></title>
+			<permissions>
+				<permission ref="page.processes" mode="set" />
+			</permissions>
+			<url-schema></url-schema>
+		</config>
+		<structure>
+			<section>
+				<element>
+					<datasource id="processes">
+						<permissions>
+							<permission ref="process.list" mode="set"></permission>
+						</permissions>
+					</datasource>
+				</element>
+			</section>
+		</structure>
+	</page>
+</pages>

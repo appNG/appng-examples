@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<events xmlns="http://www.appng.org/schema/platform" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.appng.org/schema/platform http://www.appng.org/schema/platform/appng-platform.xsd">
+
+	<event id="uploadEvent">
+		<config>
+			<permissions>
+				<permission ref="document.upload" mode="set"></permission>
+			</permissions>
+		</config>
+
+		<action id="upload">
+			<config>
+				<title>Upload Document</title>
+				<permissions>
+					<permission ref="document.upload" mode="set" />
+				</permissions>
+				<params>
+					<param name="form_action" />
+				</params>
+			</config>
+			<condition expression="${'upload' eq form_action}" />
+			<datasource id="upload" />
+			<bean id="documentUpload" />
+		</action>
+	</event>
+
+	<event id="taskEvent">
+		<config></config>
+		<action id="review">
+			<config>
+				<title>Review Document</title>
+				<permissions>
+					<permission ref="task.review" mode="set" />
+				</permissions>
+				<params>
+					<param name="form_action" />
+					<param name="id" />
+				</params>
+			</config>
+			<condition expression="${'review' eq form_action}" />
+			<datasource id="task">
+				<params>
+					<param name="id">${id}</param>
+				</params>
+			</datasource>
+			<bean id="reviewDocument">
+				<option name="task" id="${id}" mode="review" />
+			</bean>
+		</action>
+
+		<action id="approve">
+			<config>
+				<title>Approve Document</title>
+				<permissions>
+					<permission ref="task.approve" mode="set" />
+				</permissions>
+				<params>
+					<param name="form_action" />
+					<param name="id" />
+				</params>
+			</config>
+			<condition expression="${'approve' eq form_action}" />
+			<datasource id="task">
+				<params>
+					<param name="id">${id}</param>
+					<param name="readonly">true</param>
+				</params>
+			</datasource>
+			<bean id="approveDocument">
+				<option name="task" id="${id}" mode="approve" />
+			</bean>
+		</action>
+	</event>
+</events>
