@@ -2,6 +2,9 @@
 
 This is an example application demonstrating the integration of Camunda BPMN.
 
+== Prerequisites
+All you need is an appNG instance running with the https://github.com/appNG/appng/tree/master/appng-application-camunda[Camunda integration] and the https://github.com/appNG/appng-scheduler[appng-scheduler].
+
 === How it works
 This example uses a simple example process located link:src/main/resources/appng-camunda-example.bpmn[here].
 
