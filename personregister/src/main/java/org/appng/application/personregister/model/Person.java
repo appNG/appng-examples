@@ -17,6 +17,7 @@ package org.appng.application.personregister.model;
 
 import java.util.Date;
 
+import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -48,7 +49,6 @@ import org.appng.api.search.Document;
 import org.appng.application.personregister.MessageConstants;
 import org.appng.forms.FormUpload;
 import org.appng.search.indexer.SimpleDocument;
-import org.appng.tools.locator.Coordinate;
 import org.appng.xml.platform.FieldDef;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -152,10 +152,9 @@ public class Person implements FormValidator, Nameable, Versionable<Date>, Ident
 		return picturePath;
 	}
 
-	@Transient
 	public Coordinate getLocation() {
 		if (null == location) {
-			location = new Coordinate(52d, 8d);
+			location = new Coordinate(50.116302d, 8.684477d);
 		}
 		return location;
 	}
@@ -189,5 +188,26 @@ public class Person implements FormValidator, Nameable, Versionable<Date>, Ident
 				getId());
 		docAdded.setPath(path);
 		return docAdded;
+	}
+
+	@Embeddable
+	public static class Coordinate extends org.appng.tools.locator.Coordinate {
+		public Coordinate(double lat, double lng) {
+			super(lat, lng);
+		}
+
+		public Coordinate() {
+			super();
+		}
+
+		@Override
+		public Double getLatitude() {
+			return super.getLatitude();
+		}
+
+		@Override
+		public Double getLongitude() {
+			return super.getLongitude();
+		}
 	}
 }

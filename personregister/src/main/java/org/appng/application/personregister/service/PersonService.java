@@ -48,7 +48,7 @@ public class PersonService {
 
 		return personRepository.search(query, p);
 	}
-	
+
 	public List<Person> getPersonsByLastNameLikeOrNameLike(String name) {
 		return personRepository.findByNameOrLastNameLike(name);
 	}
