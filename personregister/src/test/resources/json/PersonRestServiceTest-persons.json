@@ -5,8 +5,8 @@
     "id" : 1,
     "lastname" : "Doe",
     "location" : {
-      "latitude" : 52.0,
-      "longitude" : 8.0
+      "latitude" : 50.116302,
+      "longitude" : 8.684477
     },
     "name" : "John",
     "version" : "30-11-2017 16:21"
@@ -16,8 +16,8 @@
     "id" : 2,
     "lastname" : "Doe",
     "location" : {
-      "latitude" : 52.0,
-      "longitude" : 8.0
+      "latitude" : 50.116302,
+      "longitude" : 8.684477
     },
     "name" : "Jane",
     "version" : "30-11-2017 16:21"

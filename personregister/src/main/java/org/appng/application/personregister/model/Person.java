@@ -103,7 +103,6 @@ public class Person implements FormValidator, Nameable, Versionable<Date>, Ident
 		return lastname;
 	}
 
-	@Past
 	public Date getBirthDay() {
 		return birthDay;
 	}

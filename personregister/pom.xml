@@ -9,7 +9,7 @@
 
 	<properties>
 		<outFolder>target</outFolder>
-		<appNGVersion>1.16.1</appNGVersion>
+		<appNGVersion>1.17.1</appNGVersion>
 		<displayName>${project.name}</displayName>
 		<longDescription>${project.description}</longDescription>
 		<timestamp>${maven.build.timestamp}</timestamp>

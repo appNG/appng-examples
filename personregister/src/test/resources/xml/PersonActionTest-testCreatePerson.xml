@@ -37,11 +37,6 @@
             </field>
             <field name="birthDay" type="date" format="MM/dd/yyyy" binding="birthDay">
                 <label id="birthday">Birthday</label>
-                <validation>
-                    <past>
-                        <message ref="birthDay" class="ERROR">must be a past date</message>
-                    </past>
-                </validation>
             </field>
             <field name="cashAmount" type="decimal" format="#,000.00##" binding="cashAmount">
                 <label id="cashAmount">Cash Amount</label>
@@ -102,10 +97,10 @@
             </field>
             <field name="location" type="coordinate">
                 <field name="latitude" type="decimal">
-                    <value>52.0000000</value>
+                    <value>50.1163020</value>
                 </field>
                 <field name="longitude" type="decimal">
-                    <value>8.0000000</value>
+                    <value>8.6844770</value>
                 </field>
                 <value></value>
             </field>

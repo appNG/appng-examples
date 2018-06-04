@@ -17,6 +17,7 @@ package org.appng.application.personregister.business;
 
 import java.io.IOException;
 
+import org.apache.commons.lang3.time.FastDateFormat;
 import org.appng.api.ProcessingException;
 import org.appng.api.support.CallableAction;
 import org.appng.application.personregister.model.Person;
@@ -30,8 +31,9 @@ public class PersonActionTest extends PersonTestBase {
 	}
 
 	@Test
-	public void testEditPerson() throws ProcessingException, IOException {
+	public void testEditPerson() throws Exception {
 		Person form = new Person("Luke the Duke", "Skywalker");
+		form.setBirthDay(FastDateFormat.getInstance("yyyy-MM-dd").parse("2037-11-30"));
 		CallableAction callableAction = getAction("personEvent", "editPerson").withParam(FORM_ACTION, "editPerson")
 				.withParam("id", "3").getCallableAction(form);
 		callableAction.perform();
